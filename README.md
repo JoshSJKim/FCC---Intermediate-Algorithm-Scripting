@@ -50,4 +50,20 @@ function diffArray(arr1, arr2) {
   - x from arr2 will be compared against elements of arr1 to look for elements that do not find a match.
   - the returned array is merged with the previous array and returned.
 
+- a new method was introduced to me through this exercise
+- ```includes()``` is a built-in JS method that is used to check if an array or string "includes" a specific element or substring.
+- It returns a boolean value indicating whether the element or substring is present in the array or string.
+
+```js
+array.includes(element, fromIndex);
+string.includes(substring, fromIndex);
+```
+
+- 'array/string' is the array or string being searched
+- 'element/substring' is the element or substring being searched for in the array/string
+- 'fromIndex' is an optional parameter that specifies the starting index for the search.
+  - If not specified, the search will begin at index 0
+
+- Another thing is that adding '!' negates the expression
+
 ##
