@@ -66,4 +66,114 @@ string.includes(substring, fromIndex);
 
 - Another thing is that adding '!' negates the expression
 
-##
+## Seek and Destroy
+
+- This exercise introduces the ```arguments``` object.
+  - it is a local variable that is automatically available inside all functions.
+  - It contains an array-like list of the arguments that were passed into the function when it was called
+  - regardless of whether or not those arguments were declared as parameters in the function definition.
+  - It can be used to access and manipulate the arguments passed to a function.
+  - It has a length property like any other array, and each argument can be accessed using its index
+
+- Note that the 'arguments' object is NOT an actual array, but rather an array-like object
+- It can be treated like an array to access its elements using indices.
+- But it doesn't allow the use of methods like 'push' or 'pop'.
+- However, 'argument' objects can be converted to real arrays using 'Array.from()' or the spread operator ('...')
+
+```js
+function myFunc() {
+    const argsArray = Array.from(arguments);
+    console.log(argsArray);
+}
+
+myFunc(1, 2, 3); // [1, 2, 3]
+```
+
+or
+
+```js
+function myFunc() {
+    const argsArray = [...arguments];
+    console.log(argsArray);
+}
+```
+
+- function 'destroyer' will take an array 'arr' as its argument
+- But the first argument is followed by one or more arguments.
+- The function should remove all elements from the initial array that are the same value as the arguments following the first argument
+
+```js
+function destroyer(arr) {
+    let newArr = [];
+    const argsArray = [...arguments];
+    for (let i = 1; i < argsArray.length; i++) {
+        if (!arr.includes(argsArray[i])) {
+            newArr.push(argsArray[i]);
+        }
+    }
+    return newArr;
+}
+
+console.log(destroyer([1, 2, 3, 1, 2, 3], 2, 3));
+```
+
+- The above code is what I initially came up with, but it returns an empty array.
+- The logic is as follows:
+  - when function 'destroyer' is called with an array as its argument
+  - new variable 'newArr' is declared with an empty array
+  - spread operator is used to create an actual array from the 'arguments' object.
+  - for loop is used:
+    - 'let i = 1' because the argsArray would be [arr, x, y, z...]. So begin iteration at index 1
+    - increase i by 1 for the duration of the length of 'argsArray'
+  - If 'arr' passed to the function does not (!) include the value stored at argsArray[i],
+  - push that value to newArr
+  - When the iteration is done, return 'newArr'
+
+- But this returns an empty array.
+- After a lot of thinking, I realized that the logic is reversed.
+- The above code is looking for argsArray[i] in the 'arr' array.
+  - So in the above example, the first argsArray[i] is '2'.
+  - Since it finds 2 in the 'arr' array, nothing is pushed.
+  - The same thing with 3.
+
+- I have to reverse the argsArray and 'arr' array
+
+```js
+function destroyer(arr) {
+    let newArr = [];
+    const argsArray = Array.from(arguments).slice(1); // Slice the argsArray so that it removes the 'arr' from the array
+    for (let i = 0; i < arr.length; i++) {
+        if (!argsArray.includes(arr[i])) {
+            newArr.push(arr[i]);
+        }
+    }
+    return newArr;
+}
+
+console.log(destroyer([1, 2, 3, 1, 2, 3], 2, 3));
+```
+
+- In the above code, argsArray is sliced to return a simple array without the 'arr' array.
+- the for loop will now iterate through the 'arr' array from index 0, not 'argsArray'.
+- If during iteration, there is an element in 'arr' array that is not found in 'argsArray',
+- push that element value to newArr.
+- When the iteration is complete, return newArr, which will be [1, 1] in this case.
+
+- This was good practice of using and learning the 'arguments' object.
+- The challenge specified that I have to use the 'arguments' object
+- But I found out that it can be done without it.
+
+```js
+function destroyer(arr, ...args) {
+    return arr.filter((element) => !args.includes(element));
+}
+```
+
+- the code above uses the filter method to create a new array containing all elements of the 'arr' array that pass a certain test.
+- The test is whether the current element of the 'arr' array being processed is NOT included in the 'args' array.
+
+- The 'args' parameter is defined using the rest parameter syntax (...args_), which captures the remaining arguments in the form of an array.
+  - in the case of the example above, 'destroyer([1, 2, 3, 1, 2, 3], 2, 3) will have 'args' array of [2, 3]. So Simple!
+- The callback function passed to the 'filter' method checks whether each element of 'arr' array is not included in the 'args' array.
+- The negated 'includes' method is used to check whether the current element (from 'arr' array) is not included in the 'args' array.
+- If the test returns 'true' (meaning, it's not included in the args array) it will be included in the new array.
