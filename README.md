@@ -141,7 +141,7 @@ console.log(destroyer([1, 2, 3, 1, 2, 3], 2, 3));
 ```js
 function destroyer(arr) {
     let newArr = [];
-    const argsArray = Array.from(arguments).slice(1); // Slice the argsArray so that it removes the 'arr' from the array
+    const argsArray = Array.from(arguments).slice(1); // or [...arguments].slice(1);
     for (let i = 0; i < arr.length; i++) {
         if (!argsArray.includes(arr[i])) {
             newArr.push(arr[i]);
