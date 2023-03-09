@@ -177,3 +177,31 @@ function destroyer(arr, ...args) {
 - The callback function passed to the 'filter' method checks whether each element of 'arr' array is not included in the 'args' array.
 - The negated 'includes' method is used to check whether the current element (from 'arr' array) is not included in the 'args' array.
 - If the test returns 'true' (meaning, it's not included in the args array) it will be included in the new array.
+
+## Wherefore art thou
+
+- create a function that iterates through an array of objects (first argument - collection) and returns an array of all objects that have matching key and value pairs (second argument - source).
+- Each key and value pair of the source object has to be present in the object from the collection if it is to be included in the returned array.
+
+- This challenge sounds simple enough, but it's a bit complex to iterate through objects in an array and to determine if the source object's key value pair matches the key value pair of the collection array objects.
+
+```js
+function whatIsInAName (collection, source) {
+  return collection.filter(obj =>
+    Object.keys(source).every(key =>
+    obj.hasOwnProperty(key) && obj[key] === source[key]));
+}
+```
+
+- function 'whatIsInAName' takes two arguments - 'collection' and 'source'
+- 'collection' is an array of objects. The function should return a new array containing an object from 'collection', which has the items specified 'source'
+- The function uses the filter method on 'collection' to iterate through each of the objects in the array.
+- It will return a new array containing objects that meet a specified conditions.
+- The conditions are defined by the callback function passed to the filter method.
+- the callback function takes one parameter, 'obj', which represents the current object being processed in the 'collection' array.
+- when iterating over an object in the collection array, Object.keys method is used to return an array of all the 'key' properties from the 'source'.
+- 'every' method is used to iterate over this 'key' array, and once again checks to see if every element in the array satisfies certain conditions.
+- Another callback function is introduced to define the test conditions on the 'key' array.
+- 'obj.hasOwnProperty(key)' checks to see if the current 'key' from the 'source' object is found in the 'obj' from 'collection.
+- If true, then it goes on to check if the value of 'key' in the collection 'obj' is strictly equal to the value of 'key' in the 'source' object.
+- After iterating through the 'collection' array, if an object containing a key-value pair identical to the key-value pair of 'source' is found, that 'obj' will be included in the new filtered array.
