@@ -205,3 +205,27 @@ function whatIsInAName (collection, source) {
 - 'obj.hasOwnProperty(key)' checks to see if the current 'key' from the 'source' object is found in the 'obj' from 'collection.
 - If true, then it goes on to check if the value of 'key' in the collection 'obj' is strictly equal to the value of 'key' in the 'source' object.
 - After iterating through the 'collection' array, if an object containing a key-value pair identical to the key-value pair of 'source' is found, that 'obj' will be included in the new filtered array.
+
+## Spinal Tap Case
+
+- Convert a string spinal case.
+
+```js
+function spinalCase(str) {
+  let newStr = str.replace(/[\s_]+/g, ' ')
+                  .split(/(?=[A-Z])|\s+/)
+                  .join('-')
+                  .toLowerCase();
+  return newStr;
+}
+```
+
+- It's not necessary to create a new variable for 'newStr'
+- But just for clarity sake, I did.
+- first replace all whitespace and underscore with an empty whitespace
+- use positive lookahead to split string at each occurrence of an uppercase letter or whitespace character
+- join split strings with hyphen
+- convert joined string to lowercase
+
+- This looks unnecessarily complex.
+- Better look for a more logical solution
