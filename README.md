@@ -229,3 +229,44 @@ function spinalCase(str) {
 
 - This looks unnecessarily complex.
 - Better look for a more logical solution
+
+- I need to learn more about regex expressions.
+- Some general rules to keep in mind
+  - square brackets ([]) are used to define a 'character class'.
+    - It is a set of characters that can match a single character in the input string.
+    - '[aeiou]' will match any vowel character.
+  - Parentheses '()' are used to define a 'capturing group'.
+    - It is a sub-pattern that is matched and captured as a separate group within a larger pattern.
+    - The contents of the parentheses can be referenced later in the pattern or in a replacement string.
+- In general, use square brackets when you want to match a single character out of a set of characters.
+- use parentheses when you want to capture a sub-pattern as a separate group.
+- There are other uses for brackets and parentheses, such as defining alterations, lookaheads, and lookbehinds.
+
+- The solution I used earlier seems like there are unnecessary regex patterns that cancel each other out.
+  - such as replacing whitespace with a whitespace
+  - If I'm going to join the split strings with a '-' later, I don't think I'll need to use the 'replace' method
+
+To simplify
+
+```js
+function spinalCase(str) {
+  let newStr = str.split(/(?=[A-Z])|[\s_]+/)
+                  .join('-')
+                  .toLowerCase();
+  return newStr;
+}
+```
+
+- Breakdown the regex portion
+  - '(?=[A-Z])' is a positive lookahead assertion that will split the string at each occurrence of an uppercase character
+    - This will cover the camelCase strings
+  - Use the OR operator (|) to define another condition
+  - Use square brackets to define a character class
+    - '\s' will split the string at the occurrence of whitespace character
+    - '_' will split the string at the occurrence of an underscore
+    - '[\s_]+' will split the string at one or more occurrences of whitespace character OR underscore.
+      - '+' is not really required for this challenge but I just added it to make it a 'catch-all' expression
+- The above regex expression will split the string passed into individual word strings.
+- 'join' method is used to join the separated strings with a hyphen '-'
+- .toLowerCase() will convert all of the strings to lowercase characters
+  
