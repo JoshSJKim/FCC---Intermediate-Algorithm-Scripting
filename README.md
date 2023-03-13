@@ -269,4 +269,81 @@ function spinalCase(str) {
 - The above regex expression will split the string passed into individual word strings.
 - 'join' method is used to join the separated strings with a hyphen '-'
 - .toLowerCase() will convert all of the strings to lowercase characters
-  
+
+## Pig Latin
+
+- If a word begins with a consonant, take the first consonant or consonant cluster, move it to the end of the word and add 'ay' to it.
+- If a word begins with a vowel, just add 'way' at the end.
+
+```js
+function translatePigLatin(str) {
+  if (str.match(/^[aeiou]/)) {
+    return str.concat('way');
+  } else if (str.match(/^[^aeiou]/)) {
+    let sliceInd = str.indexOf(str.match(/[aeiou]/)[0]);
+    let newStr = str.slice(sliceInd) + str.slice(0, sliceInd).concat('ay');
+    return newStr;
+  }
+}
+```
+
+- This is what I initially had.
+- It worked but it failed when the string passed doesn't have any vowels, such as 'rhythm'
+
+- Let's first review what I have so far
+  - function 'translatePigLatin' takes a string as an argument
+  - if the first character of the string is a vowel
+    - concatenate string 'way' to the end of the original string and return
+  - If the first character of the string is not a vowel
+    - create a new variable 'sliceInd' which determines the first occurrence of a vowel in the string and assign its index value to the variable
+      - indexOf() is used on the string
+        - the string is passed to indexOf() to find a match of the first occurrence of a vowel
+          - A LITTLE SIDE NOTE: the [0] is the index operator, which accesses the first element from the array returned from the 'match' method.
+            - In the current regex expression (str.match(/[aeiou]/)), we're only looking for the first occurrence of a vowel, so 'match' will return only one element.
+            - But 'match' is capable of returning an array of elements if the regex is modified (str.match(/[aeiou]/g)).
+            - adding the index operator [0] would be necessary if there are multiple elements in the returned array.
+            - Or if you want to access a specific index position from an array of elements.
+            - But in the current case, we're only looking for the first occurrence of a vowel in the string, so index operator [0] is not required.
+            - You can add it in just to be explicit.
+        - 'indexOf' will return the index position of the first vowel occurrence and assign it to 'sliceInd'
+      - Declare a new string 'newStr'.
+        - slice the original string from 'sliceInd' (first vowel occurrence to the end of the string)
+        - concatenate the result of slicing the string from index 0 to 'sliceInd' (the first consonant or consonant cluster) to the end of the string.
+        - concatenate string 'ay' to the end of the string.
+      - Return 'newStr'
+
+- Now I need to include cases where the string passed to the function does not have any vowels.
+- I tried adding the following to the end of the existing code
+
+```js
+} else if (str.match(/^[^aeiou]+$/)) { // match string that does not contain any vowels from start to end.
+  return str.concat('ay');
+}
+```
+
+- but it returned an unexpected result, which I can't even explain.
+- I think the reason why the existing code does not work for strings without vowels is because of the 'sliceInd'.
+  - Since the 'else if' statement checks if the string begins with a consonant, it will go on to look for a vowel in the string
+  - It looks for the first occurrence of a vowel, but because it does not find one, it returns 'null'.
+  - So it would be difficult to define another regex expression for strings without any vowels since it will always begin with a consonant.
+- Then work with the one that I have at the moment.
+- Use another 'if' statement within the 'else if' statement
+  - if 'str.match(/[aeiou]/)' for 'str.indexOf' does not return null, go ahead with the rest of the execution
+  - if 'str.match(/[aeiou]/)' does return null, define another 'else' statement
+
+```js
+function translatePigLatin(str) {
+  if (str.match(/^[aeiou]/)) {
+    return str.concat('way');
+  } else if (str.match(/^[^aeiou]/)) {
+    let match = str.match(/[aeiou]/);
+    if (match !== null) {
+      let sliceInd = str.indexOf(match);
+      let newStr = str.slice(sliceInd) + str.slice(0, sliceInd).concat('ay');
+      return newStr;
+    } else {
+      return str.concat('ay');
+    }
+  }
+}
+```
