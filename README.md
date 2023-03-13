@@ -440,3 +440,55 @@ function myReplace(str, before, after) {
 - return the result of replacing 'before' with 'after', accordingly
 
 - Now that I look at it, this is more concise and easy to read.
+
+## DNA Pairing
+
+- Pairs of DNA strands consist of nucleobase pairs.
+- Base pairs are represented by the characters AT and CG, which form building blocks of the DNA double helix.
+- The DNA strand is missing the pairing element.
+- Write a function to match the missing base pairs for the provided DNA strand.
+- For each character in the provided string, find the base pair character.
+- Return the results as a 2d array.
+
+```js
+function pairElement(str) {
+  let arr = str.split("");
+  let resultArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    let subArr = [];
+    switch (arr[i]) {
+      case 'G':
+        subArr.push(arr[i], 'C');
+        break;
+      case 'C':
+        subArr.push(arr[i], 'G');
+        break;
+      case 'A':
+        subArr.push(arr[i], 'T');
+        break;
+      case 'T':
+        subArr.push(arr[i], 'A');
+        break;
+    }
+    resultArr.push(subArr);
+  }
+  return resultArr;
+}
+```
+
+- function 'pairElement' takes a string 'str', which represents base pairs of DNA strands
+- declare new variable 'arr' to split the original string into an array of single character elements
+- create a new variable 'resultArr' with an empty array, which will be the encapsulating array at the end of the code
+- Generic 'for' loop to iterate through the split array 'arr'
+  - initialize an empty array 'subArr', to which the DNA pairs will be pushed.
+  - It's always confusing when it comes to placing an empty array inside or outside the 'for' loop.
+    - If the subArr is placed outside the loop, the loop will push all the pairs into the subArr rather than having separate pairs for each base pair
+    - If placed inside the loop, it will push one result into subArr, then break.
+    - It will continue to do so for the length of the array, creating a new subArr for each iteration.
+- It's been a while since I used a switch statement and I needed a refresher.
+  - The switch statement will take the element under processing as its argument and return the appropriate result.
+  - When a match is identified, it will push the current arr[i] and its corresponding pair into subArr, then break, and continue iteration.
+- I first made the mistake of entering ```return resultArr.push(subArr)```
+  - This will terminate the function after the first iteration of the 'for' loop
+- push subArr to resultArr until the end of the iteration
+- Then return the resultArr.
