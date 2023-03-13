@@ -347,3 +347,96 @@ function translatePigLatin(str) {
   }
 }
 ```
+
+## Search and Replace
+
+- Perform a search and replace on a string
+- the function will receive three arguments
+  - The string
+  - The target word
+  - The replacement word
+- If the target word's first character is uppercase, so should the replacement
+- If the target word's first character is lowercase, so should the replacement
+
+```js
+function myReplace(str, before, after) {
+  if (before.match(/^[a-z]/) && after.match(/^[A-Z]/)) {
+    let afterLower = after.charAt(0).toLowerCase() + after.slice(1);
+    return str.replace(before, afterLower);
+  } else if (before.match(/^[A-Z]/)) {
+    let afterUpper = after.charAt(0).toUpperCase() + after.slice(1);
+    return str.replace(before, afterUpper);
+  } else {
+    return str.replace(before, after);
+  }
+}
+```
+
+- If both second and third arguments are lowercase, the first 'if' statement is not necessary
+- But if the second argument is lowercase and third argument is uppercase, it changes things.
+- I initially didn't have the first 'if' statement.
+- The 'else' statement was my first 'if' statement.
+
+Let's break it down
+
+- function 'myReplace' receives three arguments: string, target word, replacement word.
+- If the first character of 'before' is lowercase and the first character of 'after' is uppercase
+  - create a new variable 'afterLower', which will convert the character at index 0 of 'after' to lowercase and concatenate with 'after' sliced from index 1
+  - return the result of replacing 'before' with 'afterLower'
+- If the first character of 'before' is uppercase
+  - create a new variable 'afterUpper', which will convert the character at index 0 of 'after' to uppercase and concatenate with 'after' sliced from index 1
+  - return the result of replacing 'before' with 'afterUpper'
+- In all other cases, return the result of replacing 'before' with 'after'.
+
+- looking at it in retrospect, I don't need to find out if 'after' begins with an uppercase character
+- 'after' simply needs to follow the letter casing of 'before'
+
+```js
+function myReplace(str, before, after) {
+  if (before.match(/^[a-z]/)) {
+    let afterLower = after.charAt(0).toLowerCase() + after.slice(1);
+    return str.replace(before, afterLower);
+  } else if (before.match(/^[A-Z]/)) {
+    let afterUpper = after.charAt(0).toUpperCase() + after.slice(1);
+    return str.replace(before, afterUpper);
+  }
+}
+```
+
+- I somehow have a feeling that this can be simplified even more, even with my limited knowledge
+- If I just check whether 'before' begins with an uppercase or lowercase once, since it's either or, I don't need to check it twice.
+
+```js
+function myReplace(str, before, after) {
+  if (before.match(/^[a-z]/)) {
+    let afterLower = after.charAt(0).toLowerCase() + after.slice(1);
+    return str.replace(before, afterLower);
+  } else {
+    let afterUpper = after.charAt(0).toUpperCase() + after.slice(1);
+    return str.replace(before, afterUpper);
+  }
+}
+```
+
+- I know that I don't need to create new variables 'let afterLower' and 'let afterUpper'.
+- I can just reassign the variables according to its uppercase or lowercase needs.
+- But I think the above code is more readable and easier to understand.
+
+```js
+function myReplace(str, before, after) {
+  if (before.match(/^[a-z/]/)) {
+    after = after.charAt(0).toLowerCase() + after.slice(1);
+  } else {
+    after = after.charAt(0).toUpperCase() + after.slice(1);
+  }
+  return str.replace(before, after);
+}
+```
+
+- If first character of 'before' is lowercase,
+  - modify 'after' to begin with lowercase
+- If not (i.e. it begins with uppercase)
+  - modify 'after' to begin with uppercase
+- return the result of replacing 'before' with 'after', accordingly
+
+- Now that I look at it, this is more concise and easy to read.
