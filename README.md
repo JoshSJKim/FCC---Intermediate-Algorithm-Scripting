@@ -458,7 +458,7 @@ function pairElement(str) {
     let subArr = [];
     switch (arr[i]) {
       case 'G':
-        subArr.push(arr[i], 'C');
+        subArr.push(arr[i], 'C');  // These can be made more explicit by replacing arr[i] with the actual value of arr[i] passed to the case
         break;
       case 'C':
         subArr.push(arr[i], 'G');
