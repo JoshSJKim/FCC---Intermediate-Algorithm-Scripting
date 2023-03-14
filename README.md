@@ -668,5 +668,38 @@ function uniteUnique(arr) {
 }
 ```
 
-- The implicit method, or the 'shorthand' syntax does not require the curly braces or the 'return' keyword.
+- The implicit method, or the 'shorthand' syntax does not require the curly braces or the 'return' keyword, as long as the return contains a single expression.
 - You can add the initial value of the accumulator (which was an empty array) explicitly, but since the concat method returns an array, it is not really necessary.
+
+## Convert HTML Entities
+
+- Convert the characters &, <, >, " (double quote), and ' (apostrophe), in a string to their corresponding HTML entities.
+
+```js
+function convertHTML(str) {
+  for (let i = 0; i < str.length; i++) {
+    switch(str[i]) {
+      case '&': str = str.replace('&', '&amp;');
+        break;
+      case '<': str = str.replace('<', '&lt;');
+        break;
+      case '>': str = str.replace('>', '&gt;');
+        break;
+      case '"': str = str.replace('"', '&quot;');
+        break;
+      case "'": str = str.replace("'", '&apos;');
+    }
+  }
+  return str;
+}
+```
+
+- Coming up with my initial solution was not that difficult.
+- function 'convertHTML' receives a string 'str' as its argument.
+- Iterate through the string using a 'for' loop.
+- Use a switch statement to check for specific characters.
+- If specified character is found, replace the character with the corresponding HTML entity using replace
+- break and return string.
+
+- But I am thinking that there must be a more concise solution.
+- I could use regex to identify the HTML entities and create an object defining the HTML entities to its corresponding characters.
