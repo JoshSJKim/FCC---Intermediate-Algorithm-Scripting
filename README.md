@@ -492,3 +492,65 @@ function pairElement(str) {
   - This will terminate the function after the first iteration of the 'for' loop
 - push subArr to resultArr until the end of the iteration
 - Then return the resultArr.
+
+## Missing Letters
+
+- Find the missing letter in the letter range passed and return it
+- If all letters are present, return undefined
+
+- A lot of trial and error on this one.
+- Couple of new methods were introduced in this challenge
+  - ```string.charCodeAt()```
+    - This method returns the Unicode value of the character at a specified index in a string
+    - It only works on strings. Note that it also works on string elements in an array
+  - ```String.fromCharCode()```
+    - This is the opposite of ```.charCodeAt()```.
+    - It returns the character corresponding to the unicode value.
+
+```js
+function fearNotLetter(str) {
+  let arr = str.split("");
+  let unicodeArr = arr.map(elem => elem.charCodeAt(0));
+  for (let i = 0; i < unicodeArr.length - 1; i++) {
+    if (unicodeArr[i] + 1 !== unicodeArr[i + 1]) {
+      let missingVal = String.fromCharCode(unicodeArr[i] + 1);
+      return missingVal;
+    }
+  }
+  return undefined;
+}
+```
+
+- function 'fearNotLetter' receives a string, which is a range of letters.
+- create an array of individual character strings using split method on 'str'
+- convert that array of letters to an array of Unicode values using '.charCodeAt' method
+  - 'elem => elem.charCodeAt(0)' passes each element of 'unicodeArr' and returns the unicode value at index 0 of each element
+  - since it's a single letter string, it does't really matter in this case, but the '(0)' represents the index value of the character in a string
+- use a 'for' loop to iterate through 'unicodeArr'
+- if value of 'unicodeArr[i]' plus 1 is not equal to the value of 'unicodeArr[i + 1]'
+  - for example, if the array consists of [97, 98, 99, 101]
+    - and if the current element in iteration is 99 (unicodeArr[i])
+    - the if statement will take 99 + 1 (100) and compare it to the element at the next index (unicodeArr[i + 1]), which is this case is 101
+    - Since 100 !== 101, this means that Unicode value '100 is missing from the array.
+    - Continue to execute the code in the if statement.
+- Use ```String.fromCharCode()``` to retrieve the character corresponding to the missing Unicode value and assign it to a new variable 'missingVal'
+- If the 'if' statement returns false throughout the iteration of the array, return 'undefined'
+
+- This seems more inefficient than it needs to be
+- I don't need to declare a new variable 'missingVal'
+  - I could simply 'return String.fromCharCode(unicodeArr[i] + 1)
+- I don't need to declare a new variable 'unicodeArr'
+  - simply reassign arr with the result of using map on the array
+  - or even put string and map together
+
+```js
+function fearNotLetter(str) {
+  let arr = str.split("").map(elem => elem.charCodeAt(0));
+  for (let i = 0; i <arr.length; i++) {
+    if (arr[i] + 1 !== arr[i + 1]) {
+      return String.fromCharCode(arr[i] + 1);
+    }
+  }
+  return undefined;
+}
+```
