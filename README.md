@@ -554,3 +554,119 @@ function fearNotLetter(str) {
   return undefined;
 }
 ```
+
+## Sorted Union
+
+- Write a function that takes two or more arrays and returns a new array of unique values in the order of the original provided arrays.
+- In other words, all values present from all arrays should be included in their original order, but with no duplicates in the final array.
+- The unique numbers should be sorted by their original order, but the final array should not be sorted in numerical order.
+
+- Had to do a bit of googling to get through this.
+- I'm still not used to using most of the methods that I've already encountered.
+- And there were more useful tools introduced.
+
+Arguments Object
+
+- In JS, the ```arguments``` object is a local variable available inside every function
+- It contains an array-like list of arguments passed to the function when it was called.
+- It is automatically created whenever a function is called.
+- It contains an entry for each argument passed to the function.
+- There are several properties and methods that can be used to access and work with the arguments passed to a function.
+- Some commonly used are:
+  - ```arguments.length``` The number of arguments passed to a function
+  - ```arguments[i]``` The value of an argument at index [i]
+  - ```[...arguments]``` Spread the arguments into an array
+
+- ```arguments``` is not an array, but an array-like object.
+- So it does not have all the methods of a regular array.
+
+reduce()
+
+- The ```.reduce()``` method is used to reduce an array of values to a single value by iterating over each element in the array.
+- It performs a specified operation during iteration.
+
+- It takes two arguments.
+  - The callback function
+    - The callback also takes two arguments
+      - The accumulator value (the result of the previous iteration, throughout the length of the array)
+      - And current element being processed
+    - The callback function returns the updated accumulator value as it iterates, which is used as the accumulator value for the next iteration.
+  - And an optional initial value
+    - If not specified, the first element of the array passed to the function will be the initial value.
+    - In this case, the first iteration will begin on the second element.
+
+```js
+let numbers = [1, 2, 3, 4, 5];
+let sum = number.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0);
+```
+
+- The above is the longhand. Below is the shorthand
+
+```js
+let numbers = [1, 2, 3, 4, 5];
+let sum = number.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+```
+
+- curly braces are not necessary if the callback function consists of a single expression.
+- If the callback function contains multiple statements, or needs to do more complex operations, curly braces are required to create a block of code for the function body.
+
+Set
+
+- ```Set``` is a JS object that represents a collection of unique values.
+- It can be used to store any type of value, such as strings, numbers, or objects and ensure that there are no duplicate values in the collection
+
+```js
+const mySet = new Set();
+```
+
+- The above is the syntax for creating a new 'Set' object
+- You can use multiple methods with .Set() once it's created
+
+```js
+mySet.add();    // add a value
+mySet.delete(); // delete a value
+mySet.has();    // check if the set object has a specified value
+mySet.size();   // check the number of values in the set object
+```
+
+- Now to get back to the challenge
+
+```js
+function uniteUnique(arr) {
+  let args = [...arguments];
+  arr = args.reduce((acc, val) => {
+    return acc.concat(...val);
+  }, []);
+  let uniqueArr = [...new Set(arr)];
+  return uniqueArr;
+}
+```
+
+- function 'uniteUnique' receives an array 'arr' as its argument. Note that 'arr' can represent any number of arrays as arguments
+- create a new variable 'args' and assign the result of spreading the 'arguments' in an array
+- The the args array containing x number of subarrays need to be merged into a single array.
+- reassign 'arr' with the result of using the reduce method on 'args'.
+  - The callback function takes two arguments: the accumulator and the current element being processed. In this case, each subarray 'val'
+  - arrow function is used to explicitly return the result of concatenating each element of each subarray (...val) as it iterates.
+  - the accumulator will gather all elements and .concat method will return the result in a single array.
+  - The initial value of the accumulator is explicitly defined as an empty array.
+- create a new variable 'uniqueArr'
+  - Assign the result of creating a new 'Set' object
+  - This removes any duplicate elements in the 'arr' array and stores the unique elements in a new 'Set' object.
+  - the spread operator (...) will spread the elements back into 'uniqueArr' and return the resulting array.
+
+- The above code can be more concise using the implicit method for the callback
+
+```js
+function uniteUnique(arr) {
+  let args = [...arguments];
+  arr = args.reduce((acc, val) => acc.concat(...val));
+  let uniqueArr = [...new Set(arr)];
+  return uniqueArr;
+}
+```
+
+- The implicit method, or the 'shorthand' syntax does not require the curly braces or the 'return' keyword.
+- You can add the initial value of the accumulator (which was an empty array) explicitly, but since the concat method returns an array, it is not really necessary.
