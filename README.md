@@ -724,3 +724,20 @@ function convertHTML(str) {
   - second argument is the current element being processed.
     - if a character matching the regex expression is identified, it will return the corresponding value of that element from 'htmlEntities' object and replace.
 - the result of the 'replace' method is returned.
+
+## Sum All Odd Fibonacci Numbers
+
+- What are Fibonacci numbers?
+  - Fibonacci numbers are a sequence of numbers in which each number after the first tw is the sum of the two preceding numbers.
+  - The first two numbers of the sequence is predefined. 0 and 1
+    - F(0) = 0
+    - F(1) = 1
+    - F(n) = F(n-1) + F(n-2) for n > 1
+    - (n) represents the nth Fibonacci number in the sequence
+
+- Create a function that receives a positive integer 'num' as its argument
+- Return the sum of all odd numbers in the sequence that are less than or equal to 'num'. 
+
+- First create a function that generates a sequence of Fibonacci numbers less than or equal to 'num'
+- use 'remainder' (%) operator to find odd numbers in the sequence and push to a new array
+- return the sum of the array elements (maybe use reduce method?)
