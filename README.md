@@ -703,3 +703,24 @@ function convertHTML(str) {
 
 - But I am thinking that there must be a more concise solution.
 - I could use regex to identify the HTML entities and create an object defining the HTML entities to its corresponding characters.
+
+```js
+function convertHTML(str) {
+  const htmlEntities = {
+    '&' : '&amp;',
+    '<' : '&lt;',
+    '>' : '&gt;',
+    '"' : '&quot;',
+    "'" : '&apos;'
+  };
+  return str.replace(/[&<>"']/g, elem => htmlEntities[elem]);
+}
+```
+
+- function 'convertHTML' receives a string 'str' as its argument
+- object 'htmlEntities' is created with the target characters and its corresponding HTML entity
+- Use the 'replace' method on the string
+  - first argument is the target character, defined using regex, enclosed in square brackets to create a character class, with a global flag (g) to match multiple occurrences.
+  - second argument is the current element being processed.
+    - if a character matching the regex expression is identified, it will return the corresponding value of that element from 'htmlEntities' object and replace.
+- the result of the 'replace' method is returned.
