@@ -801,3 +801,54 @@ function sumFibs(num) {
 - Also, since `i` is 'tied up' to `fiboArr` and `nextFib`, there's a lot of confusion in the code.
 - I honestly can't explain this. It's beyond me.
 - Also, creating another array for odd numbers and trying different things made the code even more complex.
+
+- I did some more thinking about this challenge.
+- The solution may not be more concise than the one I have, but it is another solution.
+- It is essentially the same as the one above, but with a little twist in the for loop.
+
+```js
+function sumFibs(num) {
+  let fiboArr = [0, 1];
+  let oddArr = [0, 1];
+  for (let i = 2; fiboArr[i-1] + fiboArr[i-2] <= num; i++) {
+    let next Fib = fiboArr[i-1] + fiboArr[i-2];
+    if (nextFib % 2 == 1) {
+      oddArr.push(nextFib);
+    }
+    fiboArr.push(nextFib);
+  }
+  return oddArr.reduce((acc, val) => acc + val, 0);
+}
+```
+
+OR
+
+```js
+function sumFibs(num) {
+  let fiboArr = [0, 1];
+  let oddSum = 1;
+  for (let i = 2; fiboArr[i-1] + fiboArr[i-2] <= num; i++) {
+    let next Fib = fiboArr[i-1] + fiboArr[i-2];
+    if (nextFib % 2 == 1) {
+      oddSum += nextFib;
+    }
+    fiboArr.push(nextFib);
+  }
+  return oddSum;
+}
+```
+
+- The above two solutions separate the odd numbers from fiboArr.
+- It is the same as the initial solution up to the 'if' statement.
+- If the remainder of the current 'nextFib' is 1 (meaning, if it is an odd number)
+  - push that `nextFib` to the separate array `oddArr`, which is also initialized with the same initial array as `fiboArr`
+  - `oddArr` will only accumulate odd numbers
+- At the same time, push all `nextFib` to `fiboArr`.
+  - I noticed that if I don't 'send' the rest of the `nextFib` anywhere, it returns unexpected results.
+- Finally, use `reduce` method on `oddArr` to get the sum of the odd numbers.
+
+- The following solution is also the same as the initial solution up to the `if` statement.
+- If the remainder of the current `nextFib` is 1 (odd number)
+  - continue to add `nextFib` to the accumulating `oddSum` value.
+- push all `nextFib` value to `fiboArr` to avoid unexpected results.
+- return `oddSum`
