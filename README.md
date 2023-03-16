@@ -736,8 +736,47 @@ function convertHTML(str) {
     - (n) represents the nth Fibonacci number in the sequence
 
 - Create a function that receives a positive integer 'num' as its argument
-- Return the sum of all odd numbers in the sequence that are less than or equal to 'num'. 
+- Return the sum of all odd numbers in the sequence that are less than or equal to 'num'.
 
 - First create a function that generates a sequence of Fibonacci numbers less than or equal to 'num'
 - use 'remainder' (%) operator to find odd numbers in the sequence and push to a new array
 - return the sum of the array elements (maybe use reduce method?)
+
+```js
+function sumFibs(num) {
+  let fiboArr = [0, 1];
+  for (let i = 2; i <= num; i++) {
+    let nextFib = fiboArr[i-1] + fiboArr[i-2];
+    if (nextFib > num) {
+      break;
+    }
+    fiboArr.push(nextFib);
+  }
+  return fiboArr.filter(elem => elem % 2 == 1).reduce((acc, val) => acc + val, 0);
+}
+```
+
+- It took me a while to understand how to write a code that generates the Fibonacci sequence
+- There must be numerous ways to go about this, but I decided to declare a Fibonacci sequence array 'fiboArr' with the first two numbers of the sequence in an array.
+- The 'for' loop is what threw me off the most.
+  - Up to this date, I've always used the 'for' loop with the 'i' value starting at 0.
+  - Because of this, I always thought that the initial variable always referred to the index position of an array.
+  - This is true if 'i = 0'
+  - And I thought that if I initialize 'let i = 2', the iteration will begin at index position 2.
+  - but what threw me off was 'i <= num'
+  - The solution above will loop until the counter variable 'i' reaches 'num' number of elements in the array.
+  - `I'm starting to understand how the above code works as I am breaking it down`
+- Initialize 'nextFib' with the result of the sum of values at `fiboArr[i - 1] + fiboArr[i - 2]`
+- if `nextFib` value is greater than `num`, terminate the loop
+  - This is the reason why the code passes.
+  - This `if` statement ensures that the maximum element value in the array does not exceed the `num` value.
+- Push the `nextFib` value to `fiboArr` array throughout the length of the loop.
+- This will generate the Fibonacci sequence.
+- Now, filter all elements that have odd values using the remainder operator
+- Then use the reduce method to acquire the sum of all odd numbers.
+
+- Looking at it now, I can simplify the code a bit by changing the 'less than or equal to' portion of the `for` loop to explicitly define the maximum element value rather than the maximum number of elements.
+- If I do that, I could get rid of the if statement that terminates the loop when `nextFib` is greater than `num`.
+- I could use the remainder operator to extract the odd numbers during the loop and push directly into the array and acquire the sum at once.
+
+``
