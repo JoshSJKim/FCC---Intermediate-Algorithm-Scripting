@@ -752,7 +752,8 @@ function sumFibs(num) {
     }
     fiboArr.push(nextFib);
   }
-  return fiboArr.filter(elem => elem % 2 == 1).reduce((acc, val) => acc + val, 0);
+  return fiboArr.filter(elem => elem % 2 == 1)
+                .reduce((acc, val) => acc + val, 0);
 }
 ```
 
@@ -779,4 +780,24 @@ function sumFibs(num) {
 - If I do that, I could get rid of the if statement that terminates the loop when `nextFib` is greater than `num`.
 - I could use the remainder operator to extract the odd numbers during the loop and push directly into the array and acquire the sum at once.
 
-``
+```js
+function sumFibs(num) {
+  let fiboArr = [0, 1];
+    for (let i -= 2; fiboArr[i-1] + fiboArr[i-2] <= num; i++) {
+      let nextFib = fiboArr[i-1] + fiboArr[i-2];
+      fiboArr.push(nextFib);
+    }
+    return fiboArr.filter(elem => elem % 2 == 1)
+                  .reduce((acc, val) => acc + val, 0);
+  }
+```
+
+- It didn't quite workout the way I had it planned out in my head.
+- Explicitly defining the 'less than or equal to' portion of the `for` loop did allow me to get rid of the `if` statement.
+- But I was not able to extract odd numbers only into a single array.
+- I think this is trickier because I am not iterating through an existing array.
+  - I am creating a new array as the loop runs.
+- I tried creating another separate array for the odd numbers, but it would be missing the first two elements (0, 1).
+- Also, since `i` is 'tied up' to `fiboArr` and `nextFib`, there's a lot of confusion in the code.
+- I honestly can't explain this. It's beyond me.
+- Also, creating another array for odd numbers and trying different things made the code even more complex.
