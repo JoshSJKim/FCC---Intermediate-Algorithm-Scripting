@@ -852,3 +852,73 @@ function sumFibs(num) {
   - continue to add `nextFib` to the accumulating `oddSum` value.
 - push all `nextFib` value to `fiboArr` to avoid unexpected results.
 - return `oddSum`
+
+## Sum All Primes
+
+- Rewrite sumPrimes so it returns the sum of all prime numbers that are less than or equal to num.
+
+- A prime number is a whole number greater than 1 with exactly two divisors: 1 and itself.
+- For example, 2 is a prime number because it is only divisible by 1 and 2.
+- In contrast, 4 is not prime since it is divisible by 1, 2 and 4.
+
+- I had to do some googling to find a code that generates an array of prime numbers.
+- First, create a function that checks if a given number is prime or not.
+
+```js
+const isItPrime = (n) => {
+  for (let i = 2; i <= n/2; i++) {
+    if (n % i === 0) {
+      return false;
+    }
+  };
+  return true;
+};
+```
+
+- function `isItPrime` receives an integer `n` as its argument
+- the function returns `true` if the number passed is a prime number and `false` if it is not.
+- It uses a `for` loop that iterates over all numbers between the initial `2` and upper limit `n/2`, inclusive
+  - This is to check if `n` is divisible by each number iterated.
+  - A number cannot be divided by any number that is greater than 1/2 of its value.
+  - If `n` is divisible by any number in the range, it means that it is not a prime number and the function returns `false`.
+  - If none of the iterated integer(s) could divide `n`, it means that `n` is a prime number and the function returns `true`.
+
+- Now we need a function that receives an integer as its argument and generate an array comprised of prime numbers less than or equal to the argument value
+- Then the prime numbers will be iterated to return a sum value.
+
+```js
+const isItPrime = n => {
+  for (let i = 2; i <= n/2; i++) {
+    if (n % i === 0) {
+      return false;
+    }
+  }
+  return true;
+};
+const sumPrimes = num => {
+  let primeArr = [];
+  let i = 2;
+  while(i <= num) {
+    if(isItPrime(i)) {
+      primeArr.push(i);
+    }
+    i = (i % 2 === 0) ? i + 1 : i + 2;
+  }
+  return primeArr.reduce((acc, val) => acc + val, 0);
+};
+```
+
+- function `sumPrimes` receives an integer `num` as its argument.
+- `primeArr` is initialized with an empty array
+- `i` is initialized with a value of `2`, since it is the first prime number
+- while `i` is less than or equal to `num`
+  - if `isItPrime` returns `true` for the value of `i` passed to the function,
+  - push `i` to `primeArr` array.
+- using the ternary operator,
+  - the value of `i` increments by 1 if the current value of `i` is an even number
+  - otherwise increments by 2
+  - This is to ensure that the loop only iterates through odd numbers for code optimization and efficiency
+- The `while` loop continues to loop until the value of `i` reaches the value of `num`
+- Once the loop terminates and `primeArr` is complete, use the `reduce` method to acquire the sum of the acquired prime numbers
+
+- Google did most of the work. It took a while for me to understand the logic of the code.
