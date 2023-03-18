@@ -1070,3 +1070,65 @@ function smallestCommons(arr) {
 - This is a `brute force` approach to find the smallest common multiple.
 - Even I could see that it is inefficient.
 - If I pass large numbers, even though the code still passes, the console throws a 'potential infinite loop' warning.
+
+## Drop It
+
+- Given the array arr, iterate through and remove each element starting from the first element (the 0 index) until the function func returns true when the iterated element is passed through it.
+- Then return the rest of the array once the condition is satisfied, otherwise, arr should be returned as an empty array.
+
+- The challenge sounded simple enough. But I was wrong.
+
+```js
+function dropElements(arr, func) {
+  let newArr= [];
+  for (let i = 0; i < arr.length; i++) {
+    if (func(arr[i])) {
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr;
+}
+``` 
+
+- This solution passes most of the test cases.
+- It's fine as long as the numbers are in numerical order.
+- The iteration should stop when it finds the first element that passes `true` for the function passed to the function `dropElements`
+
+- So I tried this
+
+```js
+function dropElements(arr, func) {
+  for (let i = 0; i < arr.length; i++) {
+    if (func(arr[i])) {
+      arr = arr.slice(i);
+      break;
+    }
+  }
+  return arr;
+}
+```
+
+- The above code passes as long as the elements in the array are within the range specified in the function passed as the argument.
+- but if `dropElements([1, 2, 3, 4], function(n) {return n > 5]})` is passed, since the array elements doesn't reach the condition, it just returns the original array.
+- Then I remembered it should return an empty array if the condition is not satisfied.
+
+```js
+function dropElement(arr, func) {
+  let newArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (func(arr[i])) {
+      newArr = arr.slice(i);
+      break;
+    }
+  }
+  return newArr;
+}
+```
+
+- The above solution passes the challenge, but there is one thing that is bugging me.
+- `dropElements([1, 2, 3], function(n) {return n < 3; })` should return [1, 2]. But it returns [1, 2, 3]
+- The problem is that the `for` loop is setup to break when the function condition is satisfied.
+- In this case, arr[0], which is 1, satisfies n < 3.
+- It breaks the `for` loop and returns the sliced `arr` from index 0 to the end of the array.
+- I could use an infinite `while` loop like I did in the previous challenge, but I think that is defeating the purpose of the challenge.
+- I need to find out another way to go about this. Something other than a `for` loop.
