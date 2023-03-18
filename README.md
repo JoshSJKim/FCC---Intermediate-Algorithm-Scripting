@@ -965,7 +965,11 @@ function smallestCommons(arr) {
 - I want the code to check if num * m value is divisible by the entire range.
 - But the flaw in the above code is that `j` will not reset to `range[range.length-1]` when `m` value increments
 - I need to change the code so that
-  - if `(num * m)` is not divisible by the current number in the range `j`, it should stop and move on to the next value of `j` in the range.
+  - if `(num * m)` is not divisible by the current number in the range `j`, it should stop and move on to the next value of `j` in the range, instead of incrementing `m`.
   - `m` should not increment until the entire `range` array is checked against `num * m`.
-  - In other words, the `for` loop should be reset when `m` increments.
+  - In other words, the `for` loop should be reset when `m` increments. In other words, `m++` should be outside the `for` loop
   - Does that mean I need to put the `for` loop inside another loop?
+  - I'm used to using loops with an upper or lower limit - a definite termination point.
+  - How do I use a loop (potentially infinite) until a certain condition is satisfied?
+  - The condition in this case is `if((num * m) % j === 0)` for all of the elements of the `range` array.
+  - So I just need to nest that `for` loop and `if`statement within another loop.
