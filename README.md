@@ -935,8 +935,8 @@ const sumPrimes = num => {
 function smallestCommons(arr) {
   arr = arr.sort((a, b) => a - b);
   let range = [];
-  for (let i = ar[0]; i <= arr[arr.length-1]; i++) {
-    range.push(i)l
+  for (let i = arr[0]; i <= arr[arr.length-1]; i++) {
+    range.push(i);
   };
   let num = range[range.length-1];
   let m = 1;
@@ -957,7 +957,7 @@ function smallestCommons(arr) {
 - initialize a multiplier `m` with the value 1
 - Use a reverse `for` loop to iterate from the highest value `j` of the `range` array down to 0.
 - As it iterates through each element, check if the `num` value multiplied by the `m` is divisible by `j`
-- If true, increment `m` by 1.
+- If false, increment `m` by 1.
 - If true until `j` value reaches 1, return `num * m`.
 
 - That was what I was hoping to achieve, but the code is not constructed the way I want it to.
@@ -973,3 +973,100 @@ function smallestCommons(arr) {
   - How do I use a loop (potentially infinite) until a certain condition is satisfied?
   - The condition in this case is `if((num * m) % j === 0)` for all of the elements of the `range` array.
   - So I just need to nest that `for` loop and `if`statement within another loop.
+
+- Googled 'infinite loop in JS' and the first thing that came up was `while(true)`.
+- It is one of the most common methods to create an infinite loop.
+
+```js
+function smallestCommons(arr) {
+  arr = arr.sort((a, b) => a - b);
+  let range = [];
+  for (let i = ar[0]; i <= arr[arr.length-1]; i++) {
+    range.push(i)l
+  };
+  let num = range[range.length-1];
+  let m = 1;
+  while(true) {
+    for (let j = 0; j < range.length; j++) {
+      if ((num * m) % range[j] !== 0) {
+        break;
+      }
+      return num * m;
+    }
+    m++; 
+  }
+}
+```
+
+- Tried the above, but it obviously doesn't make any sense.
+- I changed the `for` loop to be in ascending order since there is no evident reason that it has to be reversed.
+- Also, I changed `j` in the `if` statement to `range[j]` because `num * m` needs to be checked against the value of the element at index [j] of the `range` array, not the index position of the array.
+- if if `num * m` is not divisible by `range[j]`, break the for loop.
+- but it returns `num * m`, which doesn't make sense.
+- `m++` is outside the `for` loop so that if the entire range of `range` array does not successfully divide `num * m`, the `m` value will increment by 1 and repeat the `for` loop process again.
+- But the above code does not have any way to return `num * m` only if a successful match is found.
+- The above loop will stop as soon as it starts and return `num * m`
+
+- I need the code to:
+  - break the `for` loop during iteration if `num * m` is not divisible by the current number in the iteration.
+  - Then it should move on to the next value of `m`.
+  - but if a match is found, there is no need to increment, so if a match is found, it should immediately return `num * m` and terminate the potentially infinite loop.
+  - In other words, if a match is found, return `num * m` before `m++`. So I need another if statement.
+
+- Did some more googling and found `flag variables`. It is so rudimentary that I didn't even think about it.
+  - `flag variable` is a variable you define to have one value until SOME CONDITION IS SATISFIED, in which case you change the variable's value.
+  - It is a variable available to control the flow of the function statement, allowing you to check for certain conditions while the function executes.
+
+- So use flag variables to define if false, do this, and if true, do this.
+  - In the case above, if false, break `for` loop and m++ and repeat.
+  - if true, return `num * m`.
+  - Flag variable should be set to true outside the `for` loop but inside the `while` loop so that the `while` loop runs as long as the flag variable is `true`
+  - It should change its value to false if the `if` statement returns a `true` boolean value. In other words, if `num * m` is NOT divisible by `range[j]`, the statement's boolean value would be `true`, which should trigger the flag variable value to change to `false`, break the `for` loop, increment `m` and repeat process.
+  - If the flag variable remains `true` throughout the entire range of the `range` array, (in other words, `num * m` is divisible by all of the elements of the `range` array and never triggers the flag variable to change value to `false`), return `num * m` BEFORE `m++`
+
+- In code
+
+```js
+function smallestCommons(arr) {
+  arr = arr.sort((a, b) => a - b);
+  let range = [];
+  for (let i = arr[0]; i <= arr[arr.length - 1]; i++) {
+    range.push(i);
+  };
+  let num = range[range.length - 1];
+  let m = 1;
+  while(true) {
+    let lcm = true;
+  for (let j = 0; j < range.length; j++) {
+    if((num * m) % range[j] !== 0) {
+      lcm = false;
+      break;
+    }
+    } if(lcm) {
+      return num * m;
+    }
+    m++;
+  }
+}
+```
+
+- function 'smallestCommons` takes an array with two numbers as its argument.
+- The order of the two numbers may not be in order, so use a simple `sort` method to rearrange the array in ascending order.
+- Use a for loop to acquire an array with a range of integers between the two initial values, inclusive.
+
+- initialize `num` with the largest value of the element in `range`array.
+- initialize a multiplier `m` with a value of 1.
+- Use an infinite `while` loop to run until desired result is identified.
+- initialize a flag variable 'lcm' (Least Common Multiple) and set its value to `true`. The while loop will continue as long as `lcm` is true.
+- use a `for` loop to iterate through the `range` array.
+- During iteration, check if `num * m` is divisible by the value of the element at index [j] of the range array.
+- if `num * m` is NOT divisible by a certain number in the `range` array, it means that `num * m` is not the smallest common multiple.
+- change value of 'lcm' to false and break the `for` loop.
+- since 'lcm' is `false`, skip the next `if` statement and increment `m++` to repeat the `for` loop process.
+- At this point, `lcm` is reset to `true`, and the `for` loop is also reset.
+- If the `if` statement does not trigger `lcm` to change value to false throughout the entire `range` array,
+  - move to the next `if` statement. If `lcm` is still `true`, return `num * m` to terminate the `while` loop.
+
+- This is a `brute force` approach to find the smallest common multiple.
+- Even I could see that it is inefficient.
+- If I pass large numbers, even though the code still passes, the console throws a 'potential infinite loop' warning.
