@@ -922,3 +922,50 @@ const sumPrimes = num => {
 - Once the loop terminates and `primeArr` is complete, use the `reduce` method to acquire the sum of the acquired prime numbers
 
 - Google did most of the work. It took a while for me to understand the logic of the code.
+
+## Smallest Common Multiple
+
+- Find the smallest common multiple of the provided parameters that can be evenly divided by both
+- as well as by all sequential numbers in the range between these parameters.
+- The range will be an array of two numbers that will not necessarily be in numerical order.
+
+- Without giving it too much thought, this is what I initially came up with
+
+```js
+function smallestCommons(arr) {
+  arr = arr.sort((a, b) => a - b);
+  let range = [];
+  for (let i = ar[0]; i <= arr[arr.length-1]; i++) {
+    range.push(i)l
+  };
+  let num = range[range.length-1];
+  let m = 1;
+  for (let j = num; j > 0; j--) {
+    if ((num * m) % j !== 0) {
+      m++;
+    }
+  }
+  return num * m;
+}
+```
+
+- Since the argument 'arr' passed to the function may not be in numerical order, use the sort method to rearrange the arguments in ascending order.
+- initialize a new array 'range' with an empty array.
+- use a `for` loop to create a range of integers between the lowest number to the highest number, inclusive.
+- That was the easy part.
+- initialize new variable `num` with the value of the last element in the newly created `range` array.
+- initialize a multiplier `m` with the value 1
+- Use a reverse `for` loop to iterate from the highest value `j` of the `range` array down to 0.
+- As it iterates through each element, check if the `num` value multiplied by the `m` is divisible by `j`
+- If true, increment `m` by 1.
+- If true until `j` value reaches 1, return `num * m`.
+
+- That was what I was hoping to achieve, but the code is not constructed the way I want it to.
+- I think the problem is the second `for` loop. It just feels like something is missing.
+- I want the code to check if num * m value is divisible by the entire range.
+- But the flaw in the above code is that `j` will not reset to `range[range.length-1]` when `m` value increments
+- I need to change the code so that
+  - if `(num * m)` is not divisible by the current number in the range `j`, it should stop and move on to the next value of `j` in the range.
+  - `m` should not increment until the entire `range` array is checked against `num * m`.
+  - In other words, the `for` loop should be reset when `m` increments.
+  - Does that mean I need to put the `for` loop inside another loop?
