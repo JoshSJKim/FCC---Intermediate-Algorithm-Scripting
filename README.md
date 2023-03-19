@@ -1228,3 +1228,52 @@ function binaryAgents(str) {
   return str;
 }
 ```
+
+## Everything Be True
+
+- Check if the predicate (second argument) is truthy on all elements of a collection (first argument).
+- In other words, you are given an array collection of objects.
+- The predicate pre will be an object property and you need to return true if its value is truthy. Otherwise, return false.
+
+- For my initial attempt, I stuck to what I am used to.
+- I used logic similar to the one used for `Smallest Common Multiple`, where it utilized the infinite `while` loop.
+- But this one does not require an infinite loop since it only needs to iterate through a single array of multiple objects.
+
+```js
+function truthCheck(collection, pre) {
+    let truthy = true;
+  for (let i = 0; i < collection.length; i++) {
+    if (Boolean(collection[i][pre]) === false) {
+    return truthy = false;
+  }
+} return true;
+}
+```
+
+- Function `truthCheck` receives an array of objects `collection` and a predicate property `pre` as its arguments.
+- initialize flag variable `truthy` to `true`
+- Use a `for` loop to iterate through the array of objects.
+- If the value of the property at the current index position of `collection` is `false` when converted to `Boolean`
+  - reassign value of flag variable `truthy` to `false` and return that value.
+- If the `Boolean` value of `pre` remains `true` throughout the entire `collection` array, return `true`
+
+- but I wanted to try using something other than a `for` loop.
+
+```js
+function truthCheck(collection, pre) {
+  let truthy = collection.map(elem => Boolean(elem[pre]));
+  console.log(truthy); // For the arguments shown below, console will display [false, false, true]
+  return truthy.every(elem => elem === true);
+}
+
+console.log(truthCheck([{name: "Quincy", role: "Founder", isBot: false}, 
+                        {name: "Naomi", role: "", isBot: false}, 
+                        {name: "Camperbot", role: "Bot", isBot: true}], "isBot"));
+```
+
+- initialize `truthy` by using `map` on the `collection` array.
+- As it iterates through the array objects, convert the property value of `pre` of each element in the array to a `Boolean` value.
+- Finally, use `every` method to check if every element in the `truthy` array is `true`.
+- I've been shown that I don't need to explicitly check if every element is `true` (elem === true).
+- `return truthy.every(elem => elem)` is sufficient.
+- But I'd like to be explicit about it.
