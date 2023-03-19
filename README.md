@@ -1088,7 +1088,7 @@ function dropElements(arr, func) {
   }
   return newArr;
 }
-``` 
+```
 
 - This solution passes most of the test cases.
 - It's fine as long as the numbers are in numerical order.
@@ -1179,3 +1179,52 @@ function steamrollArray(arr) {
 - If it is an array, the spread operator is used to take that element and concatenate it to an empty array.
 - This process repeats recursively and continues to check for nested arrays in the original array.
 - If there are no more nested arrays in the original array, the callback function returns false and the loop terminates.
+
+## Binary Agents
+
+- Return an English translated sentence of the passed binary string.
+- The binary string will be space separated.
+
+- It would be easier if the string was an array of individual strings for each binary code.
+- Use `split` method to do just that.
+
+```js
+function binaryAgents(str) {
+  str = str.split(' ')
+}
+```
+
+- The `HINT` section suggested that it would be easier to convert the binary to decimal values.
+  - "Converting binary to decimal first simplifies the translation process by allowing us to use a lookup table to find the corresponding ASCII character for each group of 8 binary digits, rather than trying to manually translate each individual binary digit into an ASCII character."
+- I had forgotten about the `parseInt()` function, which takes a string argument and returns an integer of the specified `radix`.
+- Use `.map()` to iterate through the array created using split and use the `parseInt` function with `radix = 2` to convert binary to decimal.
+
+```js
+function binaryAgents(str) {
+  str = str.split(' ')
+           .map(elem => parseInt(elem, 2))
+}
+```
+
+- Then use `.map()` once again with the convenient `String.fromCharCode()` to return a string created from the array of decimal values.
+
+```js
+function binaryAgents(str) {
+  str = str.split(' ')
+           .map(elem => parseInt(elem, 2))
+           .map(elem => String.fromCharCode(elem))
+}
+```
+
+- Now all of the binary values have been converted to its corresponding characters.
+- Use `.join()` method to put the sentence together.
+
+```js
+function binaryAgents(str) {
+  str = str.split(' ')
+           .map(elem => parseInt(elem, 2))
+           .map(elem => String.fromCharCode(elem))
+           .join('');
+  return str;
+}
+```
