@@ -1139,3 +1139,43 @@ function dropElements(arr, func) {
 - I was too fixated on `n < 3` that I thought the return value should be [1, 2], which is not the case.
 - The challenge was to return the rest of the array as soon as the condition is satisfied.
 - 1 < 3 is true so it is correct to return [1, 2, 3]
+
+## Steamroller
+
+- Flatten a nested array. You must account for varying levels of nesting.
+
+- Had to do some googling since I had no idea what to do here.
+- Some new methods were introduced.
+  - `Array.isArray()`
+    - This checks if an object passed is an array.
+    - It returns `true` if an object is an array, and `false` otherwise.
+  - `.some()`
+    - This method tests whether an element passes a test implemented by the provided function.
+    - It returns `true` if the test passes, and `false` otherwise.
+- These methods can be combined to create a condition for a `while` loop to run until the condition returns `false`
+
+```js
+function steamrollArray(arr) {
+  while(arr.some((item) => Array.isArray(item))) {
+    arr = [].concat(...arr);
+  }
+  return arr;
+}
+```
+
+- function `steamrollArray` receives an array `arr` as its argument.
+- `arr` is multidimensional and its depth is unknown.
+  - There is a `.flat()` method that can be used, but not for the purpose of this challenge
+
+```js
+function steamrollArray(arr) {
+  arr = arr.flat(Infinity);
+  return arr;
+}
+```
+
+- Use a `while` loop to run until the specified condition returns false.
+  - The condition will check if the item passed to the callback function is an array.
+- If it is an array, the spread operator is used to take that element and concatenate it to an empty array.
+- This process repeats recursively and continues to check for nested arrays in the original array.
+- If there are no more nested arrays in the original array, the callback function returns false and the loop terminates.
