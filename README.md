@@ -1109,11 +1109,11 @@ function dropElements(arr, func) {
 ```
 
 - The above code passes as long as the elements in the array are within the range specified in the function passed as the argument.
-- but if `dropElements([1, 2, 3, 4], function(n) {return n > 5]})` is passed, since the array elements doesn't reach the condition, it just returns the original array.
+- but if `dropElements([1, 2, 3, 4], function(n) {return n > 5]})` is passed to the function, since the array elements doesn't reach the condition, it just returns the original array.
 - Then I remembered it should return an empty array if the condition is not satisfied.
 
 ```js
-function dropElement(arr, func) {
+function dropElements(arr, func) {
   let newArr = [];
   for (let i = 0; i < arr.length; i++) {
     if (func(arr[i])) {
@@ -1128,7 +1128,14 @@ function dropElement(arr, func) {
 - The above solution passes the challenge, but there is one thing that is bugging me.
 - `dropElements([1, 2, 3], function(n) {return n < 3; })` should return [1, 2]. But it returns [1, 2, 3]
 - The problem is that the `for` loop is setup to break when the function condition is satisfied.
+- The code passes as long as n is greater than or equal to a value.
+- As soon as you encounter 'less than or equal to', the first element in the array will satisfy the function and break the `for` loop.
 - In this case, arr[0], which is 1, satisfies n < 3.
 - It breaks the `for` loop and returns the sliced `arr` from index 0 to the end of the array.
 - I could use an infinite `while` loop like I did in the previous challenge, but I think that is defeating the purpose of the challenge.
 - I need to find out another way to go about this. Something other than a `for` loop.
+
+- I was fooling myself this whole time.
+- I was too fixated on `n < 3` that I thought the return value should be [1, 2], which is not the case.
+- The challenge was to return the rest of the array as soon as the condition is satisfied.
+- 1 < 3 is true so it is correct to return [1, 2, 3]
