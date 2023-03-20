@@ -1277,3 +1277,26 @@ console.log(truthCheck([{name: "Quincy", role: "Founder", isBot: false},
 - I've been shown that I don't need to explicitly check if every element is `true` (elem === true).
 - `return truthy.every(elem => elem)` is sufficient.
 - But I'd like to be explicit about it.
+
+## Arguments Optional
+
+- I had trouble figuring out how to approach this.
+- But some help was provided and it was easier to solve this problem case-by-case
+
+- If both arguments are numbers, add the two.
+- If argument length is 1, check the type of the argument.
+  - If it is a number, recall the function with a second argument
+- For all other cases, return undefined
+
+```js
+function addTogether() {
+  let args = [...arguments];
+  if (typeof args[0] === 'number' && typeof args[1] === 'number') {
+    return args[0] + args[1];
+  }
+  if (arguments.length === 1 && typeof args[0] === 'number') {
+    return (num) => addTogether(args[0], num);
+  }
+  return undefined;
+}
+```
