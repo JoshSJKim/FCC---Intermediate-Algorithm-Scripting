@@ -1300,3 +1300,70 @@ function addTogether() {
   return undefined;
 }
 ```
+
+## Make a Person
+
+- I had trouble figuring out how to approach this.
+- I even went through the OOP module again.
+- But I still don't understand how different types of methods and approaches integrate with one another.
+- Syntax is a big issue.
+  - What is allowed and what is not.
+- So I had to get some help on this one.
+
+```js
+const Person = function(firstAndLast) {
+  let fullName = firstAndLast;
+  let firstName = fullName.split(" ")[0];
+  let lastName = fullName.split(" ")[1];
+
+  this.getFullName = function() {
+    return fullName;
+  };
+
+  this.getFirstName = function() {
+    return firstName;
+  };
+
+  this.getLastName = function() {
+    return lastName;
+  };
+
+  this.setFirstName = function(inputFirst) {
+    firstName = inputFirst;
+    fullName = firstName + " " + lastName;
+  };
+
+  this.setLastName = function(inputLast) {
+    lastName = inputLast;
+    fullName = firstName + " " + lastName;
+  };
+
+  this.setFullName = function (inputFirstAndLast) {
+    fullName = inputFirstAndLast;
+    firstName = fullName.split(" ")[0];
+    lastName = fullName.split(" ")[1];
+  }
+}
+
+const bob = new Person('Bob Ross');
+bob.getFullName();
+
+```
+
+- Calling `const bob = new Person('Bob Ross')` will create a new Person object called `bob` with the full name `Bob Ross`.
+- The entire string passed as the function parameter will be assigned as the object's full name.
+- Then the full name is split into an array using the `split` function.
+- The string at index 0 will be the first name
+- The string at index 1 will be the last name.
+- various methods can be called on the `bob` object to access or update its properties.
+
+- `bob.getFirstName()` This will return "Bob"
+- `bob.getLastName()`  This will return "Ross"
+- `bob.getFullName()`  This will return "Bob Ross"
+- `bob.setFirstName('Robert')` This will update first name to "Robert" (Robert Ross)
+- `bob.setLastName('Rosenberg')` This will update last name to "Rosenberg" (Bob Rosenberg)
+- `bob.setFullName('Robert Rosenberg')` This will update the full name to "Robert Rosenberg"
+
+- When setting the names, string interpolation can be used instead of string concatenation.
+- Instead of `fullName = firstName + " " + lastName;`, you could use ```fullName = \`${firstName} ${lastName};`\``` to achieve the same result.
+- It's more readable, efficient, and concise.
