@@ -1367,3 +1367,69 @@ bob.getFullName();
 - When setting the names, string interpolation can be used instead of string concatenation.
 - Instead of `fullName = firstName + " " + lastName;`, you could use ```fullName = \`${firstName} ${lastName};`\``` to achieve the same result.
 - It's more readable, efficient, and concise.
+
+## Map the Debris
+
+- It took me a while to understand the problem itself.
+- I was never closely acquainted with math.
+
+- Simply put, I need to return an array that converts the average altitude and its value to its corresponding orbital period and value.
+
+- Most of the constants are already defined.
+- μ = GM = G (gravitational constant) * M (mass of the more massive body)
+  - In this problem, the body being orbited (static) is Earth, and its GM = 398600.4418.
+- Earth's radius (earthRadius) = 6367.4447
+
+- The array containing object(s) will be in the format {name: "name", avgAlt: avgAlt}
+- The return value should be rounded to the nearest whole number (Math.round()).
+- In order to acquire the value of 'a', I'll simply need to add the value of 'earthRadius' and 'avgAlt' passed from the argument.
+
+- It took me a while to remember how to access the key-value of an object.
+- Initially, I didn't know that the argument array could contain multiple objects.
+- This is what initially came up with.
+
+```js
+function orbitalPeriod(arr) {
+  let avgAlt = arr[0].avgAlt;
+  const GM = 398600.4418;
+  const earthRadius = 6367.4447;
+  let a = earthRadius + avgAlt;
+
+  let T = Math.round(2 * Math.PI * (Math.sqrt(Math.pow(a, 3)/GM)));
+
+  arr[0]["orbitalPeriod"] = T;
+  delete arr[0]["avgAlt"];
+  return arr;
+}
+```
+
+- This works as long as the array passed to the function contains only one object.
+- Then I realized there can be multiple objects in the array.
+- Time for a 'for' loop and some shuffling of variables.
+
+```js
+function orbitalPeriod(arr) {
+  const GM = 398600.4418;
+  const earthRadius = 6367.4447;
+
+  for (let i = 0; i < arr.length; i++) {
+    let avgAlt = arr[i].avgAlt;
+    let a = earthRadius + avgAlt;
+
+    let T = Math.round(2 * Math.PI * (Math.sqrt(Math.pow(a, 3)/GM)));
+
+    arr[i]["orbitalPeriod"] = T;
+    delete arr[i]["avgAlt"];
+  } 
+  return arr;
+}
+```
+
+- `const GM` and `const earthRadius` will remain in the global scope
+- use a 'for' loop to iterate through the argument array.
+- Access the value of the key `avgAlt` by accessing the array at index position [i] and assign it to the variable `avgAlt`
+- let 'a', the orbit's semi-major axis be the sum of `earthRadius` and `avgAlt`, since it is the average distance between the orbiting object and the body orbited.
+- Use `Kepler's Third Law` and fill in the variables to acquire the value of the orbital period `T`
+- access the current index position of the array and add the new key `orbitalPeriod` and assign it the value of `T`.
+- `delete` the existing key `avgAlt`.
+- return `arr`
